@@ -57,7 +57,7 @@ def main(BOARD):
     pygame.display.set_caption('Chess')
 
     index_moves = []
-    ##moves = []
+    moves = []
 
     status = True
     while (status):
