@@ -16,6 +16,7 @@ GREY = (128, 128, 128)
 YELLOW = (204, 204, 0)
 BLUE = (50, 255, 255)
 BLACK = (0, 0, 0)
+BEIGE = (245, 245, 220)
 
 #init av brädan 
 b = chess.Board()
@@ -54,7 +55,7 @@ def update(scrn,board):
 
 ############## main för att human vs human
 def main(BOARD):
-    scrn.fill(BLACK)
+    scrn.fill(BEIGE)
     pygame.display.set_caption('Chess')
 
     index_moves = []
@@ -67,7 +68,7 @@ def main(BOARD):
             if event.type == pygame.QUIT:
                status = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                scrn.fill(BLACK)
+                scrn.fill(BEIGE)
                 pos = pygame.mouse.get_pos()
 
                 square = (math.floor(pos[0]/100),math.floor(pos[1]/100))
@@ -76,8 +77,13 @@ def main(BOARD):
                 if index in index_moves:
 
                     move = moves[index_moves.index(index)]
-
-                    BOARD.push(move)
+                    if move in BOARD.legal_moves:
+                        print("Board state before move:")
+                        print(BOARD)
+                        BOARD.push(move)
+                        print("Board state before move:")
+                        print(BOARD)
+                       ## BOARD = BOARD.copy()
                     index=None
                     index_moves = []
                         
@@ -100,7 +106,7 @@ def main(BOARD):
                                 TY1 = 100*(7-t//8)
 
                                 pygame.draw.rect(scrn,BLUE,pygame.Rect(TX1,TY1,100,100),5)
-                        index_moves = [a.to_sqare for a in moves]
+                        index_moves = [a.to_square for a in moves]
                     
         if BOARD.outcome() != None:
             print(BOARD.outcome())
