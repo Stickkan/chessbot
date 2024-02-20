@@ -3,6 +3,8 @@ from GUI import *
 import random
 from copy import deepcopy
 
+b = chess.Board()
+
 def random_agent(BOARD):
     return random.choise(list(BOARD.legal_moves))
 
@@ -28,6 +30,27 @@ def eval_board(BOARD):
 
     return score
 
+#this is min_max at depth one
+def most_value_agent(BOARD):
+
+    moves = list(BOARD.legal_moves)
+    scores = []
+    for move in moves:
+        #creates a copy of BOARD so we dont
+        #change the original class
+        temp = deepcopy(BOARD)
+        temp.push(move)
+
+        scores.append(eval_board(temp))
+
+    if BOARD.turn == True:
+        best_move = moves[scores.index(max(scores))]
+
+    else:
+        best_move = moves[scores.index(min(scores))]
+
+    return best_move
+
 def MinMaxDepthN(BOARD, N):
     moves = list(BOARD.legal_moves)
     scores = []
@@ -40,7 +63,7 @@ def MinMaxDepthN(BOARD, N):
             temp_best_move = MinMaxDepthN(temp, N-1)
             temp.push(temp_best_move)
         
-    scores.append(temp_best_move)
+    scores.append(eval_board(temp))
 
     if BOARD.turn == True:
         best_move = moves[scores.index(max(scores))]
@@ -52,5 +75,5 @@ def MinMaxDepthN(BOARD, N):
 
 
 def depth(BOARD):
-    depth = input("Please enter the depth of AI you are facing: ")
+    depth = 2
     return MinMaxDepthN(BOARD, depth)
