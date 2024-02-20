@@ -1,5 +1,5 @@
 import chess
-from GUI import main, main_one_agent, main_two_agent
+from GUI import *
 import random
 from copy import deepcopy
 
