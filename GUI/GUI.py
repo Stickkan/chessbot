@@ -1,6 +1,7 @@
 import pygame
 import chess
 import math
+from functions import *
 
 
 #init av skärkm
@@ -116,7 +117,7 @@ def main(BOARD):
     ##pygame.display.update()    
     pygame.quit()  
 
-def main_one_agent(BOARD,agent,agent_color):
+def main_one_agent(BOARD, agent_color):
     
     '''
     for agent vs human game
@@ -131,6 +132,7 @@ def main_one_agent(BOARD,agent,agent_color):
     
     #variable to be used later
     index_moves = []
+    moves = []
 
     status = True
     while (status):
@@ -139,7 +141,7 @@ def main_one_agent(BOARD,agent,agent_color):
         
      
         if BOARD.turn==agent_color:
-            BOARD.push(agent(BOARD))
+            BOARD.push(min_maxN(BOARD, 2))
             scrn.fill(BEIGE)
 
         else:
@@ -245,4 +247,4 @@ def main_two_agent(BOARD,agent1,agent_color1,agent2):
             print(BOARD)
     pygame.quit()
 
-main(b)
+main_one_agent(b, True)
