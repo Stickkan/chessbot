@@ -75,37 +75,38 @@ def main(BOARD):
                 index = (7-square[1])*8+(square[0])
 
                 if index in index_moves:
-
                     move = moves[index_moves.index(index)]
+                    print("Selected move:", move)  # Debugging: Print the selected move
                     if move in BOARD.legal_moves:
-                        print("Board state before move:")
-                        print(BOARD)
+                        print("Executing move...")  # Debugging: Confirm that the move is being executed
                         BOARD.push(move)
-                        print("Board state before move:")
-                        print(BOARD)
-                       ## BOARD = BOARD.copy()
-                    index=None
+                        moves = []  # Clear the moves list after executing the move
+                        print("Board state after move:")
+                        print(BOARD)  # Debugging: Print the board state after the move
+                    else:
+                        print("Invalid move:", move)  # Debugging: Print if the move is invalid
+                    index = None
                     index_moves = []
                         
                 else:
                     piece = BOARD.piece_at(index)
 
-                    if piece == None:
+                    if piece is None:
                         pass
                     else:
                         all_moves = list(BOARD.legal_moves)
-                        move = []
+                        print("All legal moves:", all_moves)  # Debugging: Print all legal moves
                         for m in all_moves:
-                            if m.from_square == index:
+                            if m.from_square == index and m not in moves:  # Check if move is not already in moves
                                 moves.append(m)
 
                                 t = m.to_square
 
-                                TX1= 100*(t%8)
+                                TX1 = 100 * (t % 8)
+                                TY1 = 100 * (7 - t // 8)
 
-                                TY1 = 100*(7-t//8)
-
-                                pygame.draw.rect(scrn,BLUE,pygame.Rect(TX1,TY1,100,100),5)
+                                pygame.draw.rect(scrn, BLUE, pygame.Rect(TX1, TY1, 100, 100), 5)
+                                print("Added move:", m)  # Debugging: Print added move
                         index_moves = [a.to_square for a in moves]
                     
         if BOARD.outcome() != None:
