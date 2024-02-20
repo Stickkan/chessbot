@@ -125,7 +125,7 @@ def main_one_agent(BOARD,agent,agent_color):
     '''
     
     #make background black
-    scrn.fill(BLACK)
+    scrn.fill(BEIGE)
     #name window
     pygame.display.set_caption('Chess')
     
@@ -140,7 +140,7 @@ def main_one_agent(BOARD,agent,agent_color):
      
         if BOARD.turn==agent_color:
             BOARD.push(agent(BOARD))
-            scrn.fill(BLACK)
+            scrn.fill(BEIGE)
 
         else:
 
@@ -155,7 +155,7 @@ def main_one_agent(BOARD,agent,agent_color):
                 # if mouse clicked
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     #reset previous screen from clicks
-                    scrn.fill(BLACK)
+                    scrn.fill(BEIGE)
                     #get position of mouse
                     pos = pygame.mouse.get_pos()
 
@@ -167,38 +167,35 @@ def main_one_agent(BOARD,agent,agent_color):
                     if index in index_moves: 
                         
                         move = moves[index_moves.index(index)]
-                        #print(BOARD)
-                        #print(move)
-                        BOARD.push(move)
-                        index=None
+                        print("Selected move:", move)  # Debugging: Print the selected move
+                        if move in BOARD.legal_moves:
+                            print("Executing move...")  # Debugging: Confirm that the move is being executed
+                            BOARD.push(move)
+                            moves = []  # Clear the moves list after executing the move
+                            print("Board state after move:")
+                            print(BOARD)  # Debugging: Print the board state after the move
+                        else:
+                            print("Invalid move:", move)  # Debugging: Print if the move is invalid
+                        index = None
                         index_moves = []
                         
                     # show possible moves
                     else:
                         
-                        piece = BOARD.piece_at(index)
-                        
-                        if piece == None:
-                            
-                            pass
-                        else:
+                        all_moves = list(BOARD.legal_moves)
+                        print("All legal moves:", all_moves)  # Debugging: Print all legal moves
+                        for m in all_moves:
+                            if m.from_square == index and m not in moves:  # Check if move is not already in moves
+                                moves.append(m)
 
-                            all_moves = list(BOARD.legal_moves)
-                            moves = []
-                            for m in all_moves:
-                                if m.from_square == index:
-                                    
-                                    moves.append(m)
+                                t = m.to_square
 
-                                    t = m.to_square
+                                TX1 = 100 * (t % 8)
+                                TY1 = 100 * (7 - t // 8)
 
-                                    TX1 = 100*(t%8)
-                                    TY1 = 100*(7-t//8)
-
-                                    
-                                    pygame.draw.rect(scrn,BLUE,pygame.Rect(TX1,TY1,100,100),5)
-                            #print(moves)
-                            index_moves = [a.to_square for a in moves]
+                                pygame.draw.rect(scrn, BLUE, pygame.Rect(TX1, TY1, 100, 100), 5)
+                                print("Added move:", m)  # Debugging: Print added move
+                        index_moves = [a.to_square for a in moves]
      
     # deactivates the pygame library
         if BOARD.outcome() != None:
