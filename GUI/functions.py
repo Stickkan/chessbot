@@ -240,7 +240,7 @@ def main(BOARD):
     ##pygame.display.update()    
     pygame.quit()  
 
-def main_one_agent(BOARD, agent_color):
+def main_one_agent(BOARD, depth, agent_color):
     
     '''
     for agent vs human game
@@ -263,7 +263,7 @@ def main_one_agent(BOARD, agent_color):
         
      
         if BOARD.turn==agent_color:
-            move = min_maxN(BOARD, 4)
+            move = min_maxN(BOARD, depth)
             BOARD.push(move)
             scrn.fill(BLACK)
 
