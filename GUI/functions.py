@@ -98,13 +98,14 @@ def most_value_agent(BOARD):
 
     return best_move
 
-def min_maxN(BOARD,N):
+def min_maxN(BOARD,N,status):
 
     #opening_move = reader.get(BOARD)
     #if opening_move == None:
         #pass
     #else:
         #return opening_move.move
+
 
     #generate list of possible moves
     moves = list(BOARD.legal_moves)
@@ -124,10 +125,13 @@ def min_maxN(BOARD,N):
             #if we have not got to the final depth
             #we search more moves ahead
             if N>1:
-                temp_best_move = min_maxN(temp,N-1)
-                temp.push(temp_best_move)
-
-            scores.append(eval_board(temp))
+                #temp_best_move = min_maxN(temp,N-1)
+                #temp.push(temp_best_move)
+                temp_best_move = alpha_beta(temp, N-1, float('-inf'), float('inf'), status)
+                scores.append(temp_best_move)
+            else:
+                scores.append(eval_board(temp))
+        
 
         #if checkmate
         elif temp.is_checkmate():
@@ -156,6 +160,36 @@ def min_maxN(BOARD,N):
         best_move = moves[scores.index(min(scores))]
 
     return best_move
+
+def alpha_beta(BOARD, depth, alpha, beta, maximising_player):
+    if depth == 0 or BOARD.is_game_over():
+        return eval_board(BOARD)
+    if maximising_player:
+        max_eval = float('-inf')
+        for move in BOARD.legal_moves:
+            BOARD.push(move)
+            eval_score = alpha_beta(BOARD, depth - 1, alpha, beta, False)
+            BOARD.pop()
+            max_eval = max(max_eval, eval_score)
+            alpha = max(alpha, eval_score)
+            if beta <= alpha:
+                break
+        #print(f"Max evaluation score at depth {depth}: {max_eval}")    
+        return max_eval  
+    else:
+        min_eval = float('inf')
+        for move in BOARD.legal_moves:
+            BOARD.push(move)
+            eval_score = alpha_beta(BOARD, depth - 1, alpha, beta, True)
+            BOARD.pop()
+            min_eval = min(min_eval, eval_score)
+            beta = min(beta, eval_score)
+            if beta <= alpha:
+                break
+
+        #print(f"Min evaluation score at depth {depth}: {min_eval}")
+        return min_eval  
+
 
 def depth(BOARD):
     depth = 2
@@ -263,7 +297,7 @@ def main_one_agent(BOARD, depth, agent_color):
         
      
         if BOARD.turn==agent_color:
-            move = min_maxN(BOARD, depth)
+            move = min_maxN(BOARD, 5, status)
             BOARD.push(move)
             scrn.fill(BLACK)
 
@@ -292,8 +326,8 @@ def main_one_agent(BOARD, depth, agent_color):
                     if index in index_moves: 
                         
                         move = moves[index_moves.index(index)]
-                        #print(BOARD)
-                        #print(move)
+                        print(BOARD)
+                        print(move)
                         BOARD.push(move)
                         index=None
                         index_moves = []
