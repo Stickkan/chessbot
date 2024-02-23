@@ -190,10 +190,11 @@ def alpha_beta(BOARD, depth, alpha, beta, maximising_player):
         #print(f"Min evaluation score at depth {depth}: {min_eval}")
         return min_eval  
 
-
+'''
 def depth(BOARD):
     depth = 2
-    return MinMaxDepthN(BOARD, depth)
+    return min_maxN(BOARD, depth)
+'''
 
 def update(scrn,board):
 
@@ -297,7 +298,7 @@ def main_one_agent(BOARD, depth, agent_color):
         
      
         if BOARD.turn==agent_color:
-            move = min_maxN(BOARD, 5, status)
+            move = min_maxN(BOARD, depth, status)
             BOARD.push(move)
             scrn.fill(BLACK)
 
