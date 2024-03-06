@@ -100,13 +100,6 @@ def most_value_agent(BOARD):
 
 def min_maxN(BOARD,N,status):
 
-    #opening_move = reader.get(BOARD)
-    #if opening_move == None:
-        #pass
-    #else:
-        #return opening_move.move
-
-
     #generate list of possible moves
     moves = list(BOARD.legal_moves)
     scores = []
@@ -189,12 +182,6 @@ def alpha_beta(BOARD, depth, alpha, beta, maximising_player):
 
         #print(f"Min evaluation score at depth {depth}: {min_eval}")
         return min_eval  
-
-'''
-def depth(BOARD):
-    depth = 2
-    return min_maxN(BOARD, depth)
-'''
 
 def update(scrn,board):
 
