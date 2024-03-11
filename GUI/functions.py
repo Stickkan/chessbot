@@ -3,6 +3,7 @@ import math
 import random
 import chess
 import chess.polyglot
+import time
 from copy import deepcopy
 
 #init av skärkm
@@ -99,7 +100,8 @@ def most_value_agent(BOARD):
     return best_move
 
 def min_maxN(BOARD,N,status):
-
+    #Time variable
+    startTime = time.time()
     #generate list of possible moves
     moves = list(BOARD.legal_moves)
     scores = []
@@ -152,6 +154,8 @@ def min_maxN(BOARD,N,status):
     else:
         best_move = moves[scores.index(min(scores))]
 
+    endTime = time.time()
+    print("Time to make countermove in seconds: ", endTime - startTime)
     return best_move
 
 def alpha_beta(BOARD, depth, alpha, beta, maximising_player):
